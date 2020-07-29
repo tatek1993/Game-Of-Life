@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+var canvas = document.querySelector('canvas');
+var context = canvas.getContext('2d');
+
+// context.fillRect(100, 100, 100, 100)
+
+
+function CreateGrid(col, row) {
+  let arr = Array(col);
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = Array(row);
+  }
+  console.log(arr);
+  return arr;
+}
+
 function App() {
+  CreateGrid(10, 10);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    <div>Hi</div>
   );
 }
 
-export default App;
+export { App, CreateGrid };
