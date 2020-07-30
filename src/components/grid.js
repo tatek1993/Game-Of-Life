@@ -5,28 +5,14 @@ import React, { useState, useEffect, useRef } from 'react';
 
 // canvas.height = window.innerHeight;
 // ctx.fillRect(100, 100, 100, 100)
-function Grid() {
-    const [arr, setArr] = useState(CreateGrid(50, 50));
+function Grid({ arr, setArr }) {
 
+    // creating a reference we can use to attach to the canvas element in the jsx below
+    const canvasRef = useRef();
 
-    function CreateGrid(col, row) {
-        let arr = Array(col);
-
-        // For each column in arr we are inserting an array of equal size
-        // This creates a 2d array which we use to make a grid
-        for (let i = 0; i < arr.length; i++) {
-            arr[i] = Array(row);
-
-            for (let j = 0; j < arr[i].length; j++) {
-                arr[i][j] = false;
-            }
-        }
-        // console.table(arr);
-        return arr;
-    }
-
-
-    function Draw(arr) {
+    // DRAWING THE GRID ON THE CANVAS
+    // this useEffect will be called every time the data in arr changes
+    useEffect(() => {
         const canvasObj = canvasRef.current;
         const ctx = canvasObj.getContext('2d');
         ctx.strokeStyle = 'grey';
@@ -54,39 +40,42 @@ function Grid() {
                 ctx.stroke();
                 ctx.fill();
 
-
             }
         }
-        return arr;
-    }
+    }, [arr])
 
 
-    const canvasRef = useRef();
-
-    useEffect(() => {
-        const canvasObj = canvasRef.current;
-        const ctx = canvasObj.getContext('2d');
-        Draw(arr);
-    }, [])
-
-
-
-
+    // TOGGLE CELL
     const handleClick = (event) => {
         console.log(event)
-        // determining which cell to affect by rounding down and
-        // dividing the client x and y(pixel) coordinates by 10(px width/height for a cell)
-        let x = Math.floor(event.clientX / 10);
-        let y = Math.floor(event.clientY / 10);
+        let bounds = canvasRef.current.getBoundingClientRect();
+        // we subtract the top and left bounds to prevent the mouse from being offset when the canvas is not in the upper left corner of the page
+        let canvY = (event.clientY - bounds.top);
+        let canvX = (event.clientX - bounds.left);
 
-        // toggle whether a cell is alive(true) or dead(false)
-        arr[x][y] = !arr[x][y];
-        Draw(arr);
+        // determining which cell to affect by rounding down and
+        // dividing the mouse coordinates, client x and y(pixel) by 10(px width/height for a cell)
+        let y = Math.floor(canvY / 10); // Mouse coordinates relative to the canvas
+        let x = Math.floor(canvX / 10);
+
+
+        // we are mapping through our array of columns
+        // this is to create a new version of arr instead of modifying the original
+        const newArr = arr.map((col, i) => {
+            // if the index = the x coordinate of the cell we clicked on 
+            if (i === x) {
+                // then we modify the column by toggling the bool
+                return col.map((cell, j) => j === y ? !cell : cell)
+            } else {
+                // otherwise return the original array
+                return col;
+            }
+        });
+        setArr(newArr);
         event.stopPropagation();
         //^This will keep it from bubbling up to the body
-
-
     }
+
     return (
         <canvas
             id="canvas"
@@ -94,7 +83,6 @@ function Grid() {
             width={500}
             height={500}
             onClick={handleClick} />
-
 
     )
 }
