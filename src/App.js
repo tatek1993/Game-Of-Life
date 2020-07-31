@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './App.css';
 import Grid from './components/grid';
 
-
 let array1 = CreateGrid(50, 50);
 let array2 = CreateGrid(50, 50);
 
@@ -19,20 +18,20 @@ function CreateGrid(col, row) {
   return arr;
 }
 
+
 function App() {
-
-  // For each cell in the current generation's grid:
-  // - Examine state of all eight neighbors 
-  // - Apply rules of life to determine if this cell will change states
-  // - When main loop completes:
-  // ----Swap current and next grids
-  // ----Repeat until simulation stopped
-
   const [arr, setArr] = useState(array1);
 
+  function randomize() {
+    const randomGrid = CreateGrid(50, 50);
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        randomGrid[i][j] = Math.random(1) > .8;
 
-
-
+      }
+    }
+    setArr(randomGrid);
+  }
 
   function Generation(current, next) {
     // NEIGHBOR LOGIC
@@ -61,7 +60,7 @@ function App() {
           if (cell.y < 0) {
             cell.y += 50;
           }
-          if (current[cell.x % 49][cell.y % 49] == true) {
+          if (current[cell.x % 50][cell.y % 50] == true) {
             liveNeighbors++;
 
           }
@@ -97,16 +96,21 @@ function App() {
 
   const [gen, setGen] = useState({ count: 0 });
 
-
   const [intr, setIntr] = useState();
 
+  function copy2DArray(copy, original) {
+    original.forEach((col, x) => col.forEach((cell, y) => copy[x][y] = cell));
+  }
+
   function onPlay(event) {
-    array1 = arr;
+    copy2DArray(array1, arr);
+    copy2DArray(array2, arr);
+
     setIntr(setInterval(() => {
-      console.log("gen", gen);
       if (gen.count % 2 === 0) {
         Generation(array1, array2);
         setArr(array2);
+
       } else {
         Generation(array2, array1);
         setArr(array1);
@@ -117,15 +121,36 @@ function App() {
     }, 100));
   }
 
+
   function onStop(event) {
     clearInterval(intr);
+    setIntr(null);
+  }
+
+  function setArrIfNotPlaying(x) {
+    if (intr == null) {
+      setArr(x);
+    }
+  }
+
+  function clearBoard(event) {
+    gen.count = 0;
+    setGen(gen);
+    array1 = CreateGrid(50, 50);
+    array2 = CreateGrid(50, 50);
+    setArr(array1);
+    //console.log(gen);
+    onStop();
   }
 
   return (
     <>
-      <Grid arr={arr} setArr={setArr} />
-      <button onClick={onPlay}> Start </button>
+      <Grid arr={arr} setArr={setArrIfNotPlaying} />
+      <h1>Generation: {gen.count}</h1>
+      <button onClick={onPlay} disabled={intr != null}> Start </button>
       <button onClick={onStop}> Stop </button>
+      <button onClick={clearBoard}> Clear </button>
+      <button onClick={randomize}> Random </button>
     </>
   );
 }

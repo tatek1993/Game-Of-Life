@@ -27,6 +27,7 @@ function Grid({ arr, setArr }) {
 
                 // we offset the stroke by .5 to ensure that our stroke only takes up the amount of pixels we want without blurring 
                 // x and y coordinates (pixels) are equal to i and j * 10 (array indexes)
+                if (arr[i][j]) console.log(1);
                 ctx.fillStyle = arr[i][j] ? 'pink' : 'black';
                 let y = (j * 10) + .5;
                 let x = (i * 10) + .5;
@@ -47,7 +48,6 @@ function Grid({ arr, setArr }) {
 
     // TOGGLE CELL
     const handleClick = (event) => {
-        console.log(event)
         let bounds = canvasRef.current.getBoundingClientRect();
         // we subtract the top and left bounds to prevent the mouse from being offset when the canvas is not in the upper left corner of the page
         let canvY = (event.clientY - bounds.top);
@@ -72,8 +72,7 @@ function Grid({ arr, setArr }) {
             }
         });
         setArr(newArr);
-        event.stopPropagation();
-        //^This will keep it from bubbling up to the body
+
     }
 
     return (
