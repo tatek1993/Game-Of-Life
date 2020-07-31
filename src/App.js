@@ -22,14 +22,18 @@ function CreateGrid(col, row) {
 function App() {
   const [arr, setArr] = useState(array1);
 
+  // RANDOM CONFIG
   function randomize() {
+    // loop through our 2d array 
     const randomGrid = CreateGrid(50, 50);
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr[i].length; j++) {
+        //and randomly assign true bools to cells
         randomGrid[i][j] = Math.random(1) > .8;
 
       }
     }
+    // setArr with that new randomized grid
     setArr(randomGrid);
   }
 
@@ -38,6 +42,7 @@ function App() {
     for (let i = 0; i < current.length; i++) {
       for (let j = 0; j < current[i].length; j++) {
         const neighbors = [
+          // values for all 8 surrounding squares
           { x: i - 1, y: j + 1 },
           { x: i, y: j + 1 },
           { x: i + 1, y: j + 1 },
@@ -50,16 +55,19 @@ function App() {
 
         let currentCell = current[i][j];
         let liveNeighbors = 0;
+        // our next generation
         let futureCell = next[i][j];
 
         // for each cell in neighbors, if the cell is true, increment liveNeighbors
         neighbors.forEach((cell) => {
+          // this is to explicitly handle negative numbers should they arise
           if (cell.x < 0) {
             cell.x += 50;
           }
           if (cell.y < 0) {
             cell.y += 50;
           }
+          // by using % 50 we can make the canvas wrap around
           if (current[cell.x % 50][cell.y % 50] == true) {
             liveNeighbors++;
 
@@ -87,65 +95,81 @@ function App() {
             futureCell = false;
           }
         }
+        // we set the next gen's coordinates to the value of future cell
         next[i][j] = futureCell;
       }
     }
-
-
   }
 
   const [gen, setGen] = useState({ count: 0 });
 
+  // interval at which game progresses
   const [intr, setIntr] = useState();
 
   function copy2DArray(copy, original) {
+    // for each column in the original array, and then for each cell within
+    // set the coordinates of that copy to the value of cell
     original.forEach((col, x) => col.forEach((cell, y) => copy[x][y] = cell));
   }
 
+  // initializing speed at 300 ms
   const [speed, setSpeed] = useState(300);
 
   function onStepThruClicked() {
+    // copying everything from arr(what the user drew) and putting it in array1 and array2
     copy2DArray(array1, arr);
     copy2DArray(array2, arr);
     stepThru();
   }
 
   function stepThru() {
-
+    // determining whether gen is even or odd
+    // we want to alternate the double buffer
     if (gen.count % 2 === 0) {
+      // calculate the next generation (array2) from the current generation(array1)
       Generation(array1, array2);
+      // display the next generation
       setArr(array2);
 
     } else {
+      // the inverse
       Generation(array2, array1);
       setArr(array1);
     }
+    // increment generation and setGen to the newly modified gen object
     gen.count++;
     setGen(gen);
   }
 
   function onPlay(event) {
+    // copying everything from arr(what the user drew) and putting it in array1 and array2
     copy2DArray(array1, arr);
     copy2DArray(array2, arr);
-
+    // storing the reference to the interval
+    // speed is the delay, stepThru increments the generations
     setIntr(setInterval(stepThru, speed));
   }
 
 
   function handleChangeSpeed(event) {
+    // set the speed to whatever was selected in the dropdown
     setSpeed(event.target.value);
+    // if intr is not null, then the game is playing
     if (intr != null) {
+      // we must restart the game to get speed to update
+      // so we manually stop the game when we change speed
       onStop();
       //onPlay();
     }
 
   }
-
+  // stops game by stopping the scheduled interval
   function onStop(event) {
     clearInterval(intr);
     setIntr(null);
   }
 
+  // only allow user to draw when game is not playing
   function setArrIfNotPlaying(x) {
     if (intr == null) {
       setArr(x);
@@ -153,32 +177,47 @@ function App() {
   }
 
   function clearBoard(event) {
+    // set generation back to 0
     gen.count = 0;
     setGen(gen);
+    // recreate 2d arrays
     array1 = CreateGrid(50, 50);
     array2 = CreateGrid(50, 50);
+    // display empty array1
     setArr(array1);
     //console.log(gen);
+    // we stop the game
     onStop();
   }
 
   return (
     <>
-      <h1>John Conway's Game Of Life</h1>
+      <h1>Conway's Game Of Life</h1>
       <div className="container">
-        <Grid arr={arr} setArr={setArrIfNotPlaying} />
+        <div className="game">
+          <Grid arr={arr} setArr={setArrIfNotPlaying} />
+          <h3 id="gen">Generation: {gen.count}</h3>
+        </div>
+
         <div className="gameplay">
           <div className="intro">
-            <h3>Welcome to the Game of Life!</h3>
+            <h2>Welcome to the Game of Life!</h2>
+            <br />
+            <h4><u> RULES </u></h4>
+            <br /> If a cell is alive and has 2 or 3 neighbors, then it remains alive. Else it dies.
+            <br /> If the cell is dead and has exactly 3 neighbors, then it comes to life. Otherwise it remains dead.
+            <br />
+            <br /><h4><u> CONTROLS </u></h4>
             <br /> Click cells to set starting values.
-            <br /> <u><b>START:</b></u> Begin your cells' lifecycle.
-            <br /> <b><u>STOP:</u></b> Pause your cells.
-            <br /> <b><u>STEP FORWARD:</u></b> Move through the cells' lifecycle one frame at a time.
-            <br /> <b><u>RANDOM:</u></b> Start out with a random configuration of cells.
-            <br /> <b><u>SPEED:</u></b> Select the speed off your cells' lifecycle.
-            <br /> <b><u>CLEAR:</u></b> Clear the board.
+            <br /> <u>START:</u> Begin your cells' lifecycle.
+            <br /> <u>STOP:</u> Pause your cells.
+            <br /> <u>STEP FORWARD:</u> Move through the cells' lifecycle one frame at a time.
+            <br /> <u>RANDOM:</u> Start out with a random configuration of cells.
+            <br /> <u>SPEED:</u> Select the speed off your cells' lifecycle.
+            <br /> <u>CLEAR:</u> Clear the board.
+
           </div>
-          <h3 id="gen">Generation: {gen.count}</h3>
+
           <div className="controls">
             <button onClick={onPlay} disabled={intr != null} id="start"> Start </button>
             <button onClick={onStepThruClicked} disabled={intr != null}> Step Forward </button>

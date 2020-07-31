@@ -1,10 +1,27 @@
 .App {
   text-align: center;
+  
 }
-h1, h3 {
+h1, h2, h3, h4 {
   width: 100%;
   text-align: center;
-  margin: 2%;;
+  margin: 2%;
+  
+}
+h1{
+  text-shadow: 4px 4px  rgb(231, 158, 221);
+}
+
+h2 {
+  text-shadow: 2px 2px  rgb(231, 158, 221);
+}
+
+u {
+  background: rgba(0,0,0,0.8);
+  color: rgb(253, 216, 248);
+  padding: 4px;
+  text-decoration: none;
+  line-height: 2em;
 }
 
 canvas {
@@ -28,11 +45,19 @@ button {
   border: 2px solid rgb(156, 71, 177);
   border-radius: 5%;
 }
-
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  padding: 5%;
+}
 .intro {
   
   line-height: 1.5em;
   font-size: .8em;
+  width: 100%;
 }
 
 .container {
@@ -48,7 +73,7 @@ button {
 
 #start {
   background-color: rgb(107, 204, 103);
-  color: rgb(183, 253, 180);
+  color: rgb(222, 243, 222);
   text-shadow: 2px 2px rgb(61, 146, 58); 
   border: 2px solid rgb(61, 146, 58); 
 }
@@ -63,7 +88,9 @@ button {
 .controls{
   display: flex;
   width: 100%;
+  max-width: 30em;
   justify-content: space-around;
+  margin-top: 2%;
 }
 
 #dropdown {
@@ -71,7 +98,7 @@ button {
   justify-content: center;
 }
 
-option {
+option, select {
   font-size: xx-large;
 }
 

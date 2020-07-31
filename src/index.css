@@ -6,6 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; */
   font-family: 'Press Start 2P', cursive;
+  background-color: rgb(253, 216, 248);
 }
 
 code {
