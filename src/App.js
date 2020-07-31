@@ -102,25 +102,44 @@ function App() {
     original.forEach((col, x) => col.forEach((cell, y) => copy[x][y] = cell));
   }
 
+  const [speed, setSpeed] = useState(300);
+
+  function onStepThruClicked() {
+    copy2DArray(array1, arr);
+    copy2DArray(array2, arr);
+    stepThru();
+  }
+
+  function stepThru() {
+
+    if (gen.count % 2 === 0) {
+      Generation(array1, array2);
+      setArr(array2);
+
+    } else {
+      Generation(array2, array1);
+      setArr(array1);
+    }
+    gen.count++;
+    setGen(gen);
+  }
+
   function onPlay(event) {
     copy2DArray(array1, arr);
     copy2DArray(array2, arr);
 
-    setIntr(setInterval(() => {
-      if (gen.count % 2 === 0) {
-        Generation(array1, array2);
-        setArr(array2);
-
-      } else {
-        Generation(array2, array1);
-        setArr(array1);
-      }
-      gen.count++;
-      setGen(gen);
-
-    }, 100));
+    setIntr(setInterval(stepThru, speed));
   }
 
+
+  function handleChangeSpeed(event) {
+    setSpeed(event.target.value);
+    if (intr != null) {
+      onStop();
+      //onPlay();
+    }
+
+  }
 
   function onStop(event) {
     clearInterval(intr);
@@ -148,9 +167,16 @@ function App() {
       <Grid arr={arr} setArr={setArrIfNotPlaying} />
       <h1>Generation: {gen.count}</h1>
       <button onClick={onPlay} disabled={intr != null}> Start </button>
+      <button onClick={onStepThruClicked} disabled={intr != null}> Step Forward </button>
       <button onClick={onStop}> Stop </button>
       <button onClick={clearBoard}> Clear </button>
       <button onClick={randomize}> Random </button>
+      <label htmlFor="speed">Speed:</label>
+      <select id="speed" value={speed} onChange={handleChangeSpeed}>
+        <option value="600" aria-label="turtle">🐢</option>
+        <option value="300" aria-label="person">🚶🏽‍♂️</option>
+        <option value="50" aria-label="rabbit">🐇</option>
+      </select>
     </>
   );
 }
