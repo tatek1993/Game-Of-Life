@@ -1,38 +1,84 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1, h3 {
+  width: 100%;
+  text-align: center;
+  margin: 2%;;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+canvas {
+  border: 3px solid black;
+  width: 500px;
+  height: 500px;
+  margin: 5%;
+
+}
+label {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+button {
+  font-family: 'Press Start 2P', cursive; 
+  padding: 10px;
+  margin: 3px;
+  text-shadow: 2px 2px rgb(156, 71, 177) ;
+  color: rgb(252, 239, 255);
+  background-color: rgb(226, 146, 246);
+  border: 2px solid rgb(156, 71, 177);
+  border-radius: 5%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.intro {
+  
+  line-height: 1.5em;
+  font-size: .8em;
+}
+
+.container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-evenly;
+  
+}
+
+#gen {
+  width: 50%;
+}
+
+#start {
+  background-color: rgb(107, 204, 103);
+  color: rgb(183, 253, 180);
+  text-shadow: 2px 2px rgb(61, 146, 58); 
+  border: 2px solid rgb(61, 146, 58); 
+}
+
+#stop {
+  background-color: rgb(200, 64, 64);
+  color: rgb(243, 220, 231);
+  text-shadow: 2px 2px rgb(144, 45, 91); 
+  border: 2px solid rgb(144, 45, 91);
+}
+
+.controls{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+#dropdown {
+  display: flex;
+  justify-content: center;
+}
+
+option {
+  font-size: xx-large;
+}
+
+.gameplay {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  margin: 5%;
+  width: 100%;
 }

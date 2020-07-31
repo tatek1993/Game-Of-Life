@@ -164,19 +164,42 @@ function App() {
 
   return (
     <>
-      <Grid arr={arr} setArr={setArrIfNotPlaying} />
-      <h1>Generation: {gen.count}</h1>
-      <button onClick={onPlay} disabled={intr != null}> Start </button>
-      <button onClick={onStepThruClicked} disabled={intr != null}> Step Forward </button>
-      <button onClick={onStop}> Stop </button>
-      <button onClick={clearBoard}> Clear </button>
-      <button onClick={randomize}> Random </button>
-      <label htmlFor="speed">Speed:</label>
-      <select id="speed" value={speed} onChange={handleChangeSpeed}>
-        <option value="600" aria-label="turtle">🐢</option>
-        <option value="300" aria-label="person">🚶🏽‍♂️</option>
-        <option value="50" aria-label="rabbit">🐇</option>
-      </select>
+      <h1>John Conway's Game Of Life</h1>
+      <div className="container">
+        <Grid arr={arr} setArr={setArrIfNotPlaying} />
+        <div className="gameplay">
+          <div className="intro">
+            <h3>Welcome to the Game of Life!</h3>
+            <br /> Click cells to set starting values.
+            <br /> <u><b>START:</b></u> Begin your cells' lifecycle.
+            <br /> <b><u>STOP:</u></b> Pause your cells.
+            <br /> <b><u>STEP FORWARD:</u></b> Move through the cells' lifecycle one frame at a time.
+            <br /> <b><u>RANDOM:</u></b> Start out with a random configuration of cells.
+            <br /> <b><u>SPEED:</u></b> Select the speed off your cells' lifecycle.
+            <br /> <b><u>CLEAR:</u></b> Clear the board.
+          </div>
+          <h3 id="gen">Generation: {gen.count}</h3>
+          <div className="controls">
+            <button onClick={onPlay} disabled={intr != null} id="start"> Start </button>
+            <button onClick={onStepThruClicked} disabled={intr != null}> Step Forward </button>
+            <button onClick={onStop} id="stop"> Stop </button>
+          </div>
+
+          <div className="controls">
+            <button onClick={clearBoard}> Clear </button>
+            <button onClick={randomize}> Random </button>
+            <div id="dropdown">
+              <label htmlFor="speed">Speed:</label>
+              <select id="speed" value={speed} onChange={handleChangeSpeed}>
+                <option value="600" aria-label="turtle">🐢</option>
+                <option value="300" aria-label="person">🚶🏽‍♂️</option>
+                <option value="50" aria-label="rabbit">🐇</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </>
   );
 }
