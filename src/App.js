@@ -68,7 +68,7 @@ function App() {
             cell.y += 50;
           }
           // by using % 50 we can make the canvas wrap around
-          if (current[cell.x % 50][cell.y % 50] == true) {
+          if (current[cell.x % 50][cell.y % 50] === true) {
             liveNeighbors++;
 
           }
@@ -213,7 +213,7 @@ function App() {
             <br /> <u>STOP:</u> Pause your cells.
             <br /> <u>STEP FORWARD:</u> Move through the cells' lifecycle one frame at a time.
             <br /> <u>RANDOM:</u> Start out with a random configuration of cells.
-            <br /> <u>SPEED:</u> Select the speed off your cells' lifecycle.
+            <br /> <u>SPEED:</u> Select the speed of your cells' lifecycle.
             <br /> <u>CLEAR:</u> Clear the board.
 
           </div>
