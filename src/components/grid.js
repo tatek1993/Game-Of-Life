@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-// var isAlive = false;
+import React, { useEffect, useRef } from 'react';
 
 
-// canvas.height = window.innerHeight;
-// ctx.fillRect(100, 100, 100, 100)
 function Grid({ arr, setArr }) {
 
     // creating a reference we can use to attach to the canvas element in the jsx below

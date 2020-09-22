@@ -159,7 +159,6 @@ function App() {
       // we must restart the game to get speed to update
       // so we manually stop the game when we change speed
       onStop();
-      //onPlay();
     }
 
   }
@@ -230,8 +229,11 @@ function App() {
             <div id="dropdown">
               <label htmlFor="speed">Speed:</label>
               <select id="speed" value={speed} onChange={handleChangeSpeed}>
+                {/*  eslint-disable-next-line jsx-a11y/accessible-emoji */}
                 <option value="600" aria-label="turtle">🐢</option>
+                {/*  eslint-disable-next-line jsx-a11y/accessible-emoji */}
                 <option value="300" aria-label="person">🚶🏽‍♂️</option>
+                {/*  eslint-disable-next-line jsx-a11y/accessible-emoji */}
                 <option value="50" aria-label="rabbit">🐇</option>
               </select>
             </div>
