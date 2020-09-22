@@ -5,7 +5,9 @@
 h1, h2, h3, h4 {
   width: 100%;
   text-align: center;
-  margin: 2%;
+  padding: 2%;
+  margin: 0;
+  box-sizing: border-box;
   
 }
 h1{
@@ -108,4 +110,8 @@ option, select {
   align-items: center;
   margin: 5%;
   width: 100%;
+}
+
+.attachment-full {
+  float: right;
 }
